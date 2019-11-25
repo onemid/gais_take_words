@@ -18,7 +18,7 @@ class BasicService {
 
     public function count()
     {
-        $cmd = ['python', '../gaipy/SELECT.py', '--database', $this->db];
+        $cmd = ['python3', '../gaipy/SELECT.py', '--database', $this->db];
         $this->config = array_merge($cmd, $this->config);
 
         $process = new Process($this->config);
@@ -102,7 +102,7 @@ class BasicService {
 
     public function get()
     {
-        $cmd = ['python', '../gaipy/SELECT.py', '--database', $this->db];
+        $cmd = ['python3', '../gaipy/SELECT.py', '--database', $this->db];
         $this->config = array_merge($cmd, $this->config);
         $process = new Process($this->config);
         try {
@@ -119,7 +119,7 @@ class BasicService {
         $record_field = ['--record-arg', json_encode($fields)];
         if (count($this->config) != 0) { // select-update mode
             // pick up all the records
-            $cmd = ['python', '../gaipy/SELECT.py', '--database', $this->db];
+            $cmd = ['python3', '../gaipy/SELECT.py', '--database', $this->db];
             $select_cmd = array_merge($cmd, $this->config);
             $process = new Process($select_cmd);
             try {
@@ -130,7 +130,7 @@ class BasicService {
             }
             $success_cnt = 0;
             foreach ($result['data']['recs'] as $key => $value) {
-                $cmd = ['python', '../gaipy/UPDATE.py', '--database', $this->db];
+                $cmd = ['python3', '../gaipy/UPDATE.py', '--database', $this->db];
                 $update_cmd = array_merge($cmd, ['--record-id', $value['rid']]);
                 $update_cmd = array_merge($update_cmd, $record_field);
                 $process = new Process($update_cmd);
@@ -147,7 +147,7 @@ class BasicService {
             return ['res' => True, 'success_cnt' => $success_cnt];
         } elseif ($rid != 0) {
             $success_cnt = 0;
-            $cmd = ['python', '../gaipy/UPDATE.py', '--database', $this->db];
+            $cmd = ['python3', '../gaipy/UPDATE.py', '--database', $this->db];
             $update_cmd = array_merge($cmd, ['--record-id', $rid]);
             $update_cmd = array_merge($update_cmd, $record_field);
             $process = new Process($update_cmd);
@@ -162,7 +162,7 @@ class BasicService {
             }
             return ['res' => True, 'success_cnt' => $success_cnt];
         } else { // insert mode
-            $cmd = ['python', '../gaipy/INSERT.py', '--database', $this->db];
+            $cmd = ['python3', '../gaipy/INSERT.py', '--database', $this->db];
             $insert_cmd = array_merge($cmd, $this->config);
             $insert_cmd = array_merge($insert_cmd, $record_field);
             $process = new Process($insert_cmd);
@@ -180,7 +180,7 @@ class BasicService {
     {
         if (count($this->config) != 0) { // select-update mode
             // pick up all the records
-            $cmd = ['python', '../gaipy/SELECT.py', '--database', $this->db];
+            $cmd = ['python3', '../gaipy/SELECT.py', '--database', $this->db];
             $select_cmd = array_merge($cmd, $this->config);
             $process = new Process($select_cmd);
             try {
@@ -193,10 +193,10 @@ class BasicService {
             foreach ($result['data']['recs'] as $key => $value) {
                 array_push($rid_list, $value['rid']);
             }
-            $cmd = ['python', '../gaipy/DELETE.py', '--database', $this->db];
+            $cmd = ['python3', '../gaipy/DELETE.py', '--database', $this->db];
             $delete_cmd = array_merge($cmd, ['--record-id', json_encode($rid_list)]);
         } elseif ($rid != 0) {
-            $cmd = ['python', '../gaipy/DELETE.py', '--database', $this->db];
+            $cmd = ['python3', '../gaipy/DELETE.py', '--database', $this->db];
             $delete_cmd = array_merge($cmd, ['--record-id', json_encode([$rid])]);
         } else {
             return ['res' => False, 'success_cnt' => 0];

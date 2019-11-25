@@ -16,3 +16,15 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('classification', function() {
+    Route::post('new', 'newClassification@ClassificationController');
+    Route::post('modify', 'modifyClassification@ClassificationController');
+    Route::post('delete', 'deleteClassification@ClassificationController');
+});
+
+Route::prefix('word', function() {
+    Route::post('new', 'newWord@WordController');
+    Route::post('modify', 'modifyWord@WordController');
+    Route::post('delete', 'deleteWord@WordController');
+});

@@ -17,14 +17,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('classification', function() {
-    Route::post('new', 'newClassification@ClassificationController');
-    Route::post('modify', 'modifyClassification@ClassificationController');
-    Route::post('delete', 'deleteClassification@ClassificationController');
+Route::group(['prefix' => 'classification'], function() {
+    Route::post('new', 'ClassificationController@newClassification');
+    Route::post('modify', 'ClassificationController@modifyClassification');
+    Route::post('delete', 'ClassificationController@deleteClassification');
+
+    Route::get('get_classification/{field_name}/{rid}', 'ClassificationController@newClassification');
+    Route::get('search_classification/{field_name}/{query}', 'ClassificationController@modifyClassification');
 });
 
-Route::prefix('word', function() {
-    Route::post('new', 'newWord@WordController');
-    Route::post('modify', 'modifyWord@WordController');
-    Route::post('delete', 'deleteWord@WordController');
+Route::group(['prefix' => 'word'], function() {
+    Route::post('new', 'WordController@newWord');
+    Route::post('modify', 'WordController@modifyWord');
+    Route::post('delete', 'WordController@deleteWord');
 });

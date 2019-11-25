@@ -25,8 +25,12 @@ class BasicService {
 
         try {
             $process->mustRun();
-            $result = json_decode($process->getOutput());
-            return $result->data->cnt;
+            $result = json_decode($process->getOutput(), true);
+            if ($result['res'] == true) {
+                return $result['data']['cnt'];
+            } else {
+                return -1;
+            }
         } catch (ProcessFailedException $exception) {
             dd($exception);
             return -1;

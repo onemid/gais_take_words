@@ -110,6 +110,7 @@ class BasicService {
             $result = json_decode($process->getOutput());
             return $result;
         } catch (ProcessFailedException $exception) {
+            dd($exception);
             return -1;
         }
     }

@@ -22,8 +22,8 @@ Route::group(['prefix' => 'classification'], function() {
     Route::post('modify', 'ClassificationController@modifyClassification');
     Route::post('delete', 'ClassificationController@deleteClassification');
 
-    Route::get('get_classification/{field_name}/{rid}', 'ClassificationController@newClassification');
-    Route::get('search_classification/{field_name}/{query}', 'ClassificationController@modifyClassification');
+    Route::get('get_classification/{field_name}/{rid}', 'ClassificationController@getClassification');
+    Route::get('search_classification/{field_name}/{query}', 'ClassificationController@searchClassification');
 });
 
 Route::group(['prefix' => 'word'], function() {

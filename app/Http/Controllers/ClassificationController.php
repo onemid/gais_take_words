@@ -27,10 +27,10 @@ class ClassificationController extends Controller
 
         $now = Carbon::now();
         $json_builder = [
-            "class_name" => $request->input('class_name', 'default2'),
+            "class_name" => $request->input('class_name', ''),
             "previous_name" => "",
             "description" => $request->input('description', ''),
-            "keywords" => $request->input('keywords', 'default2'),
+            "keywords" => $request->input('keywords', ''),
             "parent_id" => $request->input('parent_id', 0),
             "child_id" => $request->input('child_id', 0),
             "user_id" => $request->input('user_id', 1),
@@ -63,6 +63,13 @@ class ClassificationController extends Controller
         $delete = new BasicService('gais_classification');
         $result = $delete
             ->delete($request->input('rid'));
+        return response()->json($result, 200);
+    }
+
+    public function getClassification($field_name, $rid = 0)
+    {
+        $get = new BasicService('gais_classification');
+        $result = $get->pattern([$field_name => $rid])->get();
         return response()->json($result, 200);
     }
 }

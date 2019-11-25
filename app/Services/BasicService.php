@@ -27,7 +27,8 @@ class BasicService {
             $process->mustRun();
             $result = json_decode($process->getOutput(), true);
             if ($result['res'] == true) {
-                return $result['data']['cnt'];
+                $r = json_decode($result['data'], true);
+                return $r['cnt'];
             } else {
                 return -1;
             }

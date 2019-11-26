@@ -56,8 +56,8 @@ class ClassificationController extends Controller
         $update = new BasicService('gais_classification');
         $now = Carbon::now();
         $result = $update->save(["class_name" => $request->input('class_name'),
-            "description" => $request->input('description'),
-            "keywords" => $request->input('keywords'),
+            "description" => $request->input('description', ''),
+            "keywords" => $request->input('keywords', ''),
             "parent_id" => $request->input('parent_id'),
             "updated_time" => $now->format('H:i:s'),
             "updated_date" => $now->format('Y-m-d')], $request->input('rid'));

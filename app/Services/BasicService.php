@@ -151,7 +151,7 @@ class BasicService {
 
     public function save(array $fields = [], int $rid = 0)
     {
-        $record_field = ['--record-arg', json_encode($fields)];
+        $record_field = ['--record-arg', urlencode(json_encode($fields))];
         if (count($this->config) != 0) { // select-update mode
             // pick up all the records
             $cmd = ['python3', '../gaipy/SELECT.py', '--database', $this->db];

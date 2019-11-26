@@ -9,11 +9,13 @@ class BasicService {
     protected $db;
     protected $fields;
     protected $config;
+    protected $rid_explicit_flag;
 
     public function __construct(string $db)
     {
         $this->db = $db;
         $this->config = [];
+        $this->rid_explicit_flag = false;
     }
 
     public function count()
@@ -50,7 +52,14 @@ class BasicService {
         }
 
         $p_list = ['col' => $col_list, 'val' => $val_list];
+    }
 
+    public function rid(int $rid = 0)
+    {
+        array_push($this->config, '--record-id');
+        array_push($this->config, json_encode([$rid]));
+        $this->rid_explicit_flag = true;
+        return $this;
     }
 
     public function pattern(array $fields = [])
@@ -107,15 +116,35 @@ class BasicService {
 
     public function get()
     {
-        $cmd = ['python3', '../gaipy/SELECT.py', '--database', $this->db];
+        if ($this->rid_explicit_flag) {
+            $cmd = ['python3', '../gaipy/SELECT_ID.py', '--database', $this->db];
+        } else {
+            $cmd = ['python3', '../gaipy/SELECT.py', '--database', $this->db];
+        }
         $this->config = array_merge($cmd, $this->config);
         $process = new Process($this->config);
         try {
             $process->mustRun();
-            $result = json_decode($process->getOutput());
+            $result = json_decode($process->getOutput(), true);
             return $result;
         } catch (ProcessFailedException $exception) {
-            dd($exception);
+            return -1;
+        }
+    }
+
+    public function all()
+    {
+        $cmd = ['python3', '../gaipy/SELECT.py', '--database', $this->db];
+        $p_list = ['col' => [], 'val' => []];
+        array_push($this->config, '--pattern');
+        array_push($this->config, json_encode($p_list));
+        $this->config = array_merge($cmd, $this->config);
+        $process = new Process($this->config);
+        try {
+            $process->mustRun();
+            $result = json_decode($process->getOutput(), true);
+            return $result;
+        } catch (ProcessFailedException $exception) {
             return -1;
         }
     }

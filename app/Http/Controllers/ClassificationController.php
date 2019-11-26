@@ -6,6 +6,7 @@ use App\Services\BasicService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
@@ -27,7 +28,8 @@ class ClassificationController extends Controller
 
         $now = Carbon::now();
         $json_builder = [
-            "class_name" => $request->input('class_name', ''),
+            "class_name" => $request->input('class_name'),
+            "persistent_id" => Str::random(8).md5($request->input('class_name').$now->format('H:i:s').$now->format('Y-m-d')),
             "previous_name" => "",
             "description" => $request->input('description', ''),
             "keywords" => $request->input('keywords', ''),
@@ -69,7 +71,31 @@ class ClassificationController extends Controller
     public function getClassification($field_name, $rid = 0)
     {
         $get = new BasicService('gais_classification');
-        $result = $get->pattern([$field_name => $rid])->get();
+        if ($rid == 0) {
+            $result = $get->all();
+//            dd(json_decode($result['data']));
+            $arr = json_decode($result['data'], true);
+            $fmt_result = [];
+            foreach($arr['recs'] as $key => $value) {
+                $parent_id = $value['rec']['parent_id'] == 0 ? '#' : $value['rec']['parent_id'];
+                array_push($fmt_result,
+                    [
+                        'id' => $value['rec']['persistent_id'],
+                        'parent_id' => $parent_id,
+                        'text' => $value['rec']['class_name'],
+                    ]);
+            }
+            return response()->json($fmt_result, 200);
+        } else {
+            $result = $get->rid($rid)->get();
+        }
+        return response()->json($result, 200);
+    }
+
+    public function searchClassification($field_name, $query = '')
+    {
+        $get = new BasicService('gais_classification');
+        $result = $get->pattern([$field_name => $query])->get();
         return response()->json($result, 200);
     }
 }

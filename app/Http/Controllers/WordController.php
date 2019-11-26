@@ -60,4 +60,34 @@ class WordController extends Controller
 
         return response()->json($result, 200);
     }
+
+    public function deleteWord(Request $request)
+    {
+        $delete = new BasicService('gais_words');
+        $result = $delete
+            ->delete($request->input('rid'));
+        return response()->json($result, 200);
+    }
+
+    public function getWord($field_name, $rid = 0)
+    {
+        $get = new BasicService('gais_words');
+        if ($rid == 0) {
+            $result = $get
+                ->pageCount(50)
+                ->all();
+        } else {
+            $result = $get->rid($rid)->get();
+        }
+        $arr = json_decode($result['data'], true);
+        return response()->json($arr, 200);
+    }
+
+    public function searchWord($field_name, $query = '')
+    {
+        $get = new BasicService('gais_words');
+        $result = $get->pattern([$field_name => $query])->get();
+        $arr = json_decode($result['data'], true);
+        return response()->json($arr, 200);
+    }
 }

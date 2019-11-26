@@ -103,6 +103,7 @@ class ClassificationController extends Controller
     {
         $get = new BasicService('gais_classification');
         $result = $get->pattern([$field_name => $query])->get();
-        return response()->json($result, 200);
+        $arr = json_decode($result['data'], true);
+        return response()->json($arr, 200);
     }
 }

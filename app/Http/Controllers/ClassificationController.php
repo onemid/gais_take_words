@@ -36,7 +36,7 @@ class ClassificationController extends Controller
             "previous_name" => "",
             "description" => $request->input('description', ''),
             "keywords" => $request->input('keywords', ''),
-            "parent_id" => $request->input('parent_id', 0),
+            "parent_id" => $request->input('parent_id', '#'),
             "child_id" => $request->input('child_id', 0),
             "user_id" => $request->input('user_id', 1),
             "created_time" => $now->format('H:i:s'),
@@ -87,7 +87,7 @@ class ClassificationController extends Controller
                 array_push($fmt_result,
                     [
                         'id' => isset($value['rec']['persistent_id']) ? $value['rec']['persistent_id'] : '',
-                        'parent_id' => $parent_id,
+                        'parent' => $parent_id,
                         'text' => $value['rec']['class_name'],
                         'rid' => $value['rec']['_rid'],
                     ]);

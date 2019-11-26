@@ -69,11 +69,12 @@ class WordController extends Controller
         return response()->json($result, 200);
     }
 
-    public function getWord($field_name, $rid = 0)
+    public function getWord($field_name, $rid = 0, $page_num = 1)
     {
         $get = new BasicService('gais_words');
         if ($rid == 0) {
             $result = $get
+                ->page($page_num)
                 ->pageCount(50)
                 ->all();
         } else {

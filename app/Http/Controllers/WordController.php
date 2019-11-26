@@ -83,6 +83,21 @@ class WordController extends Controller
         return response()->json($arr, 200);
     }
 
+    public function getWordByClass($class_id, $sub_class_id_mode = false)
+    {
+        // strategy: (1) fetch the class_id (persistent_id) and its child_id,
+        $get = new BasicService('gais_words');
+        if ($rid == 0) {
+            $result = $get
+                ->pageCount(50)
+                ->all();
+        } else {
+            $result = $get->rid($rid)->get();
+        }
+        $arr = json_decode($result['data'], true);
+        return response()->json($arr, 200);
+    }
+
     public function searchWord($field_name, $query = '')
     {
         $get = new BasicService('gais_words');

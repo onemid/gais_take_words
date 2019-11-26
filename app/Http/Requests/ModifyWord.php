@@ -24,9 +24,9 @@ class ModifyWord extends FormRequest
     public function rules()
     {
         return [
-            'word' => 'required',
-            'class_id' => 'required|string',
-            'rid' => 'required|integer',
+            'word' => 'string',
+            'class_id' => 'string',
+            'rid' => 'integer',
         ];
     }
 }

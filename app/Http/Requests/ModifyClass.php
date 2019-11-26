@@ -24,9 +24,9 @@ class ModifyClass extends FormRequest
     public function rules()
     {
         return [
-            'class_name' => 'required',
-            'parent_id' => 'required|string',
-            'rid' => 'required|string',
+            'class_name' => 'string',
+            'parent_id' => 'string',
+            'rid' => 'string',
         ];
     }
 }

@@ -77,14 +77,16 @@ class ClassificationController extends Controller
     {
         $get = new BasicService('gais_classification');
         if ($rid == 0) {
-            $result = $get->all();
+            $result = $get
+                ->pageCount(50)
+                ->all();
             $arr = json_decode($result['data'], true);
             $fmt_result = [];
             foreach($arr['recs'] as $key => $value) {
                 $parent_id = $value['rec']['parent_id'];
                 array_push($fmt_result,
                     [
-                        'id' => $value['rec']['persistent_id'],
+                        'id' => isset($value['rec']['persistent_id']) ? $value['rec']['persistent_id'] : '',
                         'parent_id' => $parent_id,
                         'text' => $value['rec']['class_name'],
                         'rid' => $value['rec']['_rid'],

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ModifyClass;
+use App\Http\Requests\NewClass;
 use App\Services\BasicService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -14,10 +16,10 @@ class ClassificationController extends Controller
 {
     /**
      * To receive the request that make the new classification
-     * @param Request $request
+     * @param NewClass $request
      * @return JsonResponse
      */
-    public function newClassification(Request $request)
+    public function newClassification(NewClass $request)
     {
 //        $bs = new BasicService('gais_classification');
 //        $cnt = $bs->pattern(["class_name" => $request->input('class_name', 'default2')])
@@ -48,14 +50,14 @@ class ClassificationController extends Controller
         return response()->json($result, 200);
     }
 
-    public function modifyClassification(Request $request)
+    public function modifyClassification(ModifyClass $request)
     {
         $update = new BasicService('gais_classification');
         $now = Carbon::now();
         $result = $update->save(["class_name" => $request->input('class_name'),
             "description" => $request->input('description'),
             "keywords" => $request->input('keywords'),
-            "parent_id" => ($request->input('parent_id') == '#') ? 0 : $request->input('parent_id'),
+            "parent_id" => $request->input('parent_id'),
             "updated_time" => $now->format('H:i:s'),
             "updated_date" => $now->format('Y-m-d')], $request->input('rid'));
 
@@ -78,7 +80,7 @@ class ClassificationController extends Controller
             $arr = json_decode($result['data'], true);
             $fmt_result = [];
             foreach($arr['recs'] as $key => $value) {
-                $parent_id = $value['rec']['parent_id'] == 0 ? '#' : $value['rec']['parent_id'];
+                $parent_id = $value['rec']['parent_id'];
                 array_push($fmt_result,
                     [
                         'id' => $value['rec']['persistent_id'],

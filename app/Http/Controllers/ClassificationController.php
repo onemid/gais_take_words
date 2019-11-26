@@ -27,9 +27,10 @@ class ClassificationController extends Controller
 //        }
 
         $now = Carbon::now();
+        $persistent_id = Str::random(8).md5($request->input('class_name').$now->format('H:i:s').$now->format('Y-m-d'));
         $json_builder = [
             "class_name" => $request->input('class_name'),
-            "persistent_id" => Str::random(8).md5($request->input('class_name').$now->format('H:i:s').$now->format('Y-m-d')),
+            "persistent_id" => $persistent_id,
             "previous_name" => "",
             "description" => $request->input('description', ''),
             "keywords" => $request->input('keywords', ''),
@@ -43,6 +44,7 @@ class ClassificationController extends Controller
         ];
         $insert = new BasicService('gais_classification');
         $result = $insert->save($json_builder);
+        $result['data'] = $json_builder;
         return response()->json($result, 200);
     }
 

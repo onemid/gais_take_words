@@ -33,5 +33,5 @@ Route::group(['prefix' => 'word'], function() {
 
     Route::get('get_word_by_class/{class_id}/{sub_class_id_mode}', 'WordController@getWordByClass');
     Route::get('get_word/{field_name}/{rid}/{page_num}', 'WordController@getWord');
-    Route::get('search_word/{field_name}/{query}', 'WordController@searchWord');
+    Route::get('search_word/{field_name}/{query}/{page_num}', 'WordController@searchWord');
 });

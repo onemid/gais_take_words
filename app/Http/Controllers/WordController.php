@@ -99,10 +99,13 @@ class WordController extends Controller
         return response()->json($arr, 200);
     }
 
-    public function searchWord($field_name, $query = '')
+    public function searchWord($field_name, $query = '', $page_num = 1)
     {
         $get = new BasicService('gais_words');
-        $result = $get->pattern([$field_name => $query])->get();
+        $result = $get->pattern([$field_name => $query])
+            ->page($page_num)
+            ->pageCount(50)
+            ->get();
         $arr = json_decode($result['data'], true);
         return response()->json($arr, 200);
     }

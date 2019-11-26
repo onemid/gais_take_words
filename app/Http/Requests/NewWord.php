@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ModifyClass extends FormRequest
+class NewWord extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class ModifyClass extends FormRequest
     public function rules()
     {
         return [
-            'class_name' => 'required',
-            'parent_id' => 'required|string',
-            'rid' => 'required|string',
+            'word' => 'required',
+            'class_id' => 'required|string',
         ];
     }
 }

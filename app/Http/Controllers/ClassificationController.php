@@ -21,12 +21,12 @@ class ClassificationController extends Controller
      */
     public function newClassification(NewClass $request)
     {
-//        $bs = new BasicService('gais_classification');
-//        $cnt = $bs->pattern(["class_name" => $request->input('class_name', 'default2')])
-//            ->count();
-//        if ($cnt > 0) {
-//            return response()->json("the data has already existed", 400);
-//        }
+        $bs = new BasicService('gais_classification');
+        $cnt = $bs->pattern(["class_name" => $request->input('class_name', 'default2')])
+            ->count();
+        if ($cnt > 0) {
+            return response()->json("the data has already existed", 400);
+        }
 
         $now = Carbon::now();
         $persistent_id = Str::random(8).md5($request->input('class_name').$now->format('H:i:s').$now->format('Y-m-d'));

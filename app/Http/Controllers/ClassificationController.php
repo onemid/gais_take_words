@@ -19,12 +19,12 @@ class ClassificationController extends Controller
      */
     public function newClassification(Request $request)
     {
-        $bs = new BasicService('gais_classification');
-        $cnt = $bs->pattern(["class_name" => $request->input('class_name', 'default2')])
-            ->count();
-        if ($cnt > 0) {
-            return response()->json("the data has already existed", 400);
-        }
+//        $bs = new BasicService('gais_classification');
+//        $cnt = $bs->pattern(["class_name" => $request->input('class_name', 'default2')])
+//            ->count();
+//        if ($cnt > 0) {
+//            return response()->json("the data has already existed", 400);
+//        }
 
         $now = Carbon::now();
         $json_builder = [
@@ -73,7 +73,6 @@ class ClassificationController extends Controller
         $get = new BasicService('gais_classification');
         if ($rid == 0) {
             $result = $get->all();
-//            dd(json_decode($result['data']));
             $arr = json_decode($result['data'], true);
             $fmt_result = [];
             foreach($arr['recs'] as $key => $value) {
@@ -83,6 +82,7 @@ class ClassificationController extends Controller
                         'id' => $value['rec']['persistent_id'],
                         'parent_id' => $parent_id,
                         'text' => $value['rec']['class_name'],
+                        'rid' => $value['rec']['_rid'],
                     ]);
             }
             return response()->json($fmt_result, 200);

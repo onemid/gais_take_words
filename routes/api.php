@@ -30,4 +30,7 @@ Route::group(['prefix' => 'word'], function() {
     Route::post('new', 'WordController@newWord');
     Route::post('modify', 'WordController@modifyWord');
     Route::post('delete', 'WordController@deleteWord');
+
+    Route::get('get_words/{c_persistent_id}/{mode}', 'ClassificationController@getClassification');
+    Route::get('get/{field_name}/{query}', 'ClassificationController@searchClassification');
 });

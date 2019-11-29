@@ -46,6 +46,7 @@ class ClassificationController extends Controller
         ];
         $insert = new BasicService('gais_classification');
         $result = $insert->save($json_builder);
+//        dd($result);
         $new_rid = json_decode($result['data'], true);
         $result['data'] = array_merge($new_rid[0], $json_builder);
         return response()->json($result, 200);

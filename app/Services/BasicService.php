@@ -225,7 +225,11 @@ class BasicService {
                 $result = null;
             }
             $rid_list = [];
-            foreach ($result['data']['recs'] as $key => $value) {
+            $result = json_decode($result['data'], true);
+            if ($result == null || !array_key_exists('recs', $result)) {
+                return ['res' => False, 'success_cnt' => 0];
+            }
+            foreach ($result['recs'] as $key => $value) {
                 array_push($rid_list, $value['rid']);
             }
             $cmd = ['python3', '../gaipy/DELETE.py', '--database', $this->db];

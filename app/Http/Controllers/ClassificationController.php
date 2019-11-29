@@ -94,7 +94,7 @@ class ClassificationController extends Controller
                 ->all();
             $arr = json_decode($result['data'], true);
             $fmt_result = [];
-            if (array_key_exists('recs', $arr)){
+            if ($arr != null && array_key_exists('recs', $arr)){
                 foreach($arr['recs'] as $key => $value) {
                     $parent_id = $value['rec']['parent_id'];
                     array_push($fmt_result,

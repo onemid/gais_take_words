@@ -67,9 +67,21 @@ class ClassificationController extends Controller
 
     public function deleteClassification(Request $request)
     {
-        $delete = new BasicService('gais_classification');
-        $result = $delete
-            ->delete($request->input('rid'));
+        $delete_classification = new BasicService('gais_classification');
+        $delete_classification
+            ->pattern(['persistent_id' => $request->input('persistent_id')])
+            ->delete();
+
+        $delete_c_classification = new BasicService('gais_classification');
+        $delete_c_classification
+            ->pattern(['parent_id' => $request->input('persistent_id')])
+            ->delete();
+
+        $delete_word = new BasicService('gais_words');
+        $result = $delete_word
+            ->pattern(['class_id' => $request->input('persistent_id')])
+            ->delete();
+
         return response()->json($result, 200);
     }
 
@@ -106,4 +118,6 @@ class ClassificationController extends Controller
         $arr = json_decode($result['data'], true);
         return response()->json($arr, 200);
     }
+
+
 }

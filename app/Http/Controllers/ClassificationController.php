@@ -94,15 +94,17 @@ class ClassificationController extends Controller
                 ->all();
             $arr = json_decode($result['data'], true);
             $fmt_result = [];
-            foreach($arr['recs'] as $key => $value) {
-                $parent_id = $value['rec']['parent_id'];
-                array_push($fmt_result,
-                    [
-                        'id' => isset($value['rec']['persistent_id']) ? $value['rec']['persistent_id'] : '',
-                        'parent' => $parent_id,
-                        'text' => $value['rec']['class_name'],
-                        'rid' => $value['rec']['_rid'],
-                    ]);
+            if (array_key_exists('recs', $arr)){
+                foreach($arr['recs'] as $key => $value) {
+                    $parent_id = $value['rec']['parent_id'];
+                    array_push($fmt_result,
+                        [
+                            'id' => isset($value['rec']['persistent_id']) ? $value['rec']['persistent_id'] : '',
+                            'parent' => $parent_id,
+                            'text' => $value['rec']['class_name'],
+                            'rid' => $value['rec']['_rid'],
+                        ]);
+                }
             }
             return response()->json($fmt_result, 200);
         } else {

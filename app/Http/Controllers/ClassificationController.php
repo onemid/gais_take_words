@@ -91,7 +91,7 @@ class ClassificationController extends Controller
         $get = new BasicService('gais_classification');
         if ($rid == 0) {
             $result = $get
-                ->pageCount(50)
+                ->pageCount(500)
                 ->all();
             $arr = json_decode($result['data'], true);
             $fmt_result = [];
